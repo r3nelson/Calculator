@@ -67,24 +67,48 @@ function exponent(...args) {
     return acc ** cur;
   });
 }
+function createArrayOfDisplayValues() {
+  const value = calculator_screen.replaceAll(" ", "");
+  const find_whole_numbers = /[+\-x÷]/g;
+  const stringNumbers = value.split(find_whole_numbers);
+  // console.log(numbers);
 
-function operator_logic() {
-  // remove spaces from display value
-  console.log(calculator_screen.value);
-  let value = calculator_screen.value.replaceAll(" ", "");
-
-  // need to fix regex so it splits into a list of nums
-  // num0 num1 num2 etc.
-  // I know there will have to be an operator between each num
-
-  const regex = "/[+|-|x|/]/";
-  console.log(value);
-  value = value.split(regex);
-  console.log(value);
-  // for(i = 0; i < value.length; i++)
-  //     if(value[i] === '+')
-  //       add(c)
+  const numbers = [];
+  stringNumbers.forEach((num) => numbers.push(Number(num)));
+  return numbers;
 }
+
+function createArrayOfDisplayOperators() {
+  const value = calculator_screen.replaceAll(" ", "");
+
+  const find_operators = /\d+/g;
+  const unfiltered_operators = value.split(find_operators);
+
+  const operators = [];
+  unfiltered_operators.forEach((ele) => {
+    if (ele === "") return;
+    else operators.push(ele);
+  });
+
+  // console.log(unfiltered_operators);
+  // console.log(operators);
+
+  return operators;
+}
+
+function PEMDAS(valueArray, operatorArray) {
+  let total = 0;
+
+  // if exponent in array: take index of where exponent is in array list
+  // operatorArray.forEach(operator, (i) => {
+  //   if (operator === "^") total += exponent(valueArray[i], valueArray[i + 1]);
+  //   if (operator === "x") total += multiply(valueArray[i], valueArray[i + 1]);
+  //   if (operator === "÷") total += divide(valueArray[i], valueArray[i + 1]);
+  //   if (operator === "+") total += add(valueArray[i], valueArray[i + 1]);
+  //   if (operator === "-") total += subtract(valueArray[i], valueArray[i + 1]);
+  // });
+}
+
 function addSqaureRootToDisplay() {
   return;
 }
@@ -94,14 +118,16 @@ function clearDisplay() {
 }
 
 function backspaceDisplay() {
-  calculator_screen.value = calculator_screen.value.slice(0, -1);
+  const last_space = calculator_screen.value.slice(-1);
+  if (last_space === " ")
+    calculator_screen.value = calculator_screen.value.slice(0, -3);
+  else calculator_screen.value = calculator_screen.value.slice(0, -1);
 }
 
 function addValueToDisplay(input) {
   if (calculator_screen.value === "0") calculator_screen.value = "";
 
-  let temp = calculator_screen.value;
-  calculator_screen.value = temp + input;
+  calculator_screen.value += input;
 }
 
 function addOperatorToDisplay(input) {
@@ -181,6 +207,9 @@ decimal_button.addEventListener("click", addDecmialToDisplay);
 square_root_button.addEventListener("click", addSqaureRootToDisplay);
 exponent_button.addEventListener("click", () => addValueToDisplay("^"));
 // add pi_button
-equal_sign_button.addEventListener("click", operator_logic);
+// equal_sign_button.addEventListener("click", operator_logic);
 clear_button.addEventListener("click", clearDisplay);
 backspace_button.addEventListener("click", backspaceDisplay);
+
+//regex for space[operator]space
+// const regex = /\s[+x÷-]\s/g
