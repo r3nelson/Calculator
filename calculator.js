@@ -1,5 +1,5 @@
 "use strict";
-
+console.log("test");
 // display
 const calculator_screen = document.getElementById("calculator-screen");
 
@@ -21,15 +21,20 @@ const add_button = document.getElementById("addition");
 const subtract_button = document.getElementById("subtract");
 const multiply_button = document.getElementById("multiply");
 const divide_button = document.getElementById("divide");
-const exponent_button = document.getElementById("exponent");
 
 // symbols
 const decimal_button = document.getElementById("decimal");
-const pi_button = document.getElementById("pi");
+const negative_button = document.getElementById("negative");
 const square_root_button = document.getElementById("square-root");
+const exponent_button = document.getElementById("exponent");
+const pi_button = document.getElementById("pi");
 const equal_sign_button = document.getElementById("equal-sign");
 const clear_button = document.getElementById("clear");
 const backspace_button = document.getElementById("backspace");
+
+function reverseString(str) {
+  return str.split("").reverse().join("");
+}
 
 function add(...args) {
   return args.reduce(function (acc, cur) {
@@ -152,6 +157,34 @@ function addDecmialToDisplay() {
   else calculator_screen.value += ".";
 }
 
+function addNegativeToDisplay() {
+  const last_space = calculator_screen.value.slice(-1);
+
+  // not --   [can't have negative followed by negative]
+  if (last_space === "-") {
+    alert(
+      "cannot place a negative by a negative without operator or number in between"
+    );
+    return;
+  }
+
+  // not num- [can't have number followed by negative]
+  const number_regex = /[0-9]/g;
+  if (number_regex.test(last_space) && calculator_screen.value !== "0") {
+    alert("cannot put a negative after a number");
+    return;
+  }
+
+  const reversedString = reverseString(calculator_screen.value);
+
+  // not -num- [can't have negative number negative]
+  [...reversedString].forEach((char, i, arr) => {
+    if (number_regex.test(char) && arr[i + 1] === "-") return;
+  });
+
+  addValueToDisplay("-");
+}
+
 function getDisplayValue() {
   const x = parseFloat(calculator_screen.value);
   console.log(typeof x);
@@ -201,12 +234,12 @@ multiply_button.addEventListener("click", () => addOperatorToDisplay(" x "));
 
 // other buttons
 decimal_button.addEventListener("click", addDecmialToDisplay);
-// add negative_button
+negative_button.addEventListener("click", addNegativeToDisplay);
 
 // actually make square root button work
 square_root_button.addEventListener("click", addSqaureRootToDisplay);
 exponent_button.addEventListener("click", () => addValueToDisplay("^"));
-// add pi_button
+pi_button.addEventListener("click", () => addValueToDisplay("π"));
 // equal_sign_button.addEventListener("click", operator_logic);
 clear_button.addEventListener("click", clearDisplay);
 backspace_button.addEventListener("click", backspaceDisplay);
