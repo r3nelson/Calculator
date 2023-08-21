@@ -31,6 +31,8 @@ const pi_button = document.getElementById("pi");
 const equal_sign_button = document.getElementById("equal-sign");
 const clear_button = document.getElementById("clear");
 const backspace_button = document.getElementById("backspace");
+const open_parenthesis_button = document.getElementById("open-parenthesis");
+const close_parenthesis_button = document.getElementById("close-parenthesis");
 
 function reverseString(str) {
   return str.split("").reverse().join("");
@@ -118,12 +120,20 @@ function addSqaureRootToDisplay() {
   return;
 }
 
+function addPiToDisplay() {}
+
 function clearDisplay() {
   calculator_screen.value = "0";
 }
 
 function backspaceDisplay() {
   const last_space = calculator_screen.value.slice(-1);
+
+  if (calculator_screen.value.length === 1) {
+    calculator_screen.value = "0";
+    return;
+  }
+
   if (last_space === " ")
     calculator_screen.value = calculator_screen.value.slice(0, -3);
   else calculator_screen.value = calculator_screen.value.slice(0, -1);
@@ -243,6 +253,7 @@ pi_button.addEventListener("click", () => addValueToDisplay("π"));
 // equal_sign_button.addEventListener("click", operator_logic);
 clear_button.addEventListener("click", clearDisplay);
 backspace_button.addEventListener("click", backspaceDisplay);
-
-//regex for space[operator]space
-// const regex = /\s[+x÷-]\s/g
+open_parenthesis_button.addEventListener("click", () => addValueToDisplay("("));
+close_parenthesis_button.addEventListener("click", () =>
+  addValueToDisplay(")")
+);
