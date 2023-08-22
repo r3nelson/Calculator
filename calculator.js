@@ -2,6 +2,7 @@
 console.log("test");
 // display
 const calculator_screen = document.getElementById("calculator-screen");
+const cursor = document.getElementById("cursor");
 
 // buttons
 const zero_button = document.getElementById("0");
@@ -75,7 +76,7 @@ function exponent(...args) {
   });
 }
 function createArrayOfDisplayValues() {
-  const value = calculator_screen.replaceAll(" ", "");
+  const value = calculator_screen.value.replaceAll(" ", "");
   const find_whole_numbers = /[+\-x÷]/g;
   const stringNumbers = value.split(find_whole_numbers);
   // console.log(numbers);
@@ -86,7 +87,7 @@ function createArrayOfDisplayValues() {
 }
 
 function createArrayOfDisplayOperators() {
-  const value = calculator_screen.replaceAll(" ", "");
+  const value = calculator_screen.value.replaceAll(" ", "");
 
   const find_operators = /\d+/g;
   const unfiltered_operators = value.split(find_operators);
@@ -103,8 +104,13 @@ function createArrayOfDisplayOperators() {
   return operators;
 }
 
-function PEMDAS(valueArray, operatorArray) {
+function PEMDAS() {
   let total = 0;
+  const valueArray = createArrayOfDisplayValues();
+  const operatorArray = createArrayOfDisplayOperators();
+  console.log(calculator_screen.value);
+  console.log(valueArray);
+  console.log(operatorArray);
 
   // if exponent in array: take index of where exponent is in array list
   // operatorArray.forEach(operator, (i) => {
@@ -167,6 +173,28 @@ function addDecmialToDisplay() {
   else calculator_screen.value += ".";
 }
 
+function addSqaureRootToDisplay() {
+  // const last_two_spaces = calculator_screen.value.slice(-2);
+  // if (last_two_spaces !== "√(") addValueToDisplay("√(");
+  addValueToDisplay("√(");
+}
+
+function addOpenParenthesisToDisplay() {
+  return;
+}
+
+function addCloseParenthesisToDisplay() {
+  // can't have close before open
+  // num open must equal num close - 1 before we add close
+  let open_count = 0;
+  let close_count = 0;
+
+  for (let i = 0; i < calculator_screen.value.length; i++)
+    if (calculator_screen.value[i] === "(") open_count += 1;
+    else if (calculator_screen.value[i] === ")") close_count += 1;
+
+  if (open_count > close_count) addValueToDisplay(")");
+}
 function addNegativeToDisplay() {
   const last_space = calculator_screen.value.slice(-1);
 
@@ -250,10 +278,12 @@ negative_button.addEventListener("click", addNegativeToDisplay);
 square_root_button.addEventListener("click", addSqaureRootToDisplay);
 exponent_button.addEventListener("click", () => addValueToDisplay("^"));
 pi_button.addEventListener("click", () => addValueToDisplay("π"));
-// equal_sign_button.addEventListener("click", operator_logic);
+equal_sign_button.addEventListener("click", PEMDAS);
+
 clear_button.addEventListener("click", clearDisplay);
 backspace_button.addEventListener("click", backspaceDisplay);
 open_parenthesis_button.addEventListener("click", () => addValueToDisplay("("));
-close_parenthesis_button.addEventListener("click", () =>
-  addValueToDisplay(")")
+close_parenthesis_button.addEventListener(
+  "click",
+  addCloseParenthesisToDisplay
 );
