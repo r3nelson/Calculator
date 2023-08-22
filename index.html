@@ -10,13 +10,16 @@
 
   <body>
     <div class="calculator">
-      <input
-        type="text"
-        class="calculator-screen"
-        id="calculator-screen"
-        value="0"
-        disabled
-      />
+      <div class="wrapper">
+        <input
+          type="text"
+          class="calculator-screen"
+          id="calculator-screen"
+          value="0"
+          disabled
+        />
+        <span id="cursor">|HEHEHE</span>
+      </div>
 
       <div class="calculator-keys">
         <button id="addition" class="operator">+</button>
@@ -45,7 +48,12 @@
         <button id="pi" class="pi">π</button>
         <button id="equal-sign" class="equal-sign">=</button>
         <button id="clear" class="clear">clear</button>
-        <button id="backspace" class="backspace">←</button>
+        <button id="backspace" class="backspace">DEL</button>
+        <button id="open-parenthesis" class="open-parenthesis">(</button>
+        <button id="close-parenthesis" class="close-parenthesis">)</button>
+        <button id="left-arrow" class="left-arrow">←</button>
+        <button id="right-arrow" class="right-arrow">→</button>
+        <button id="factorial" class="factorial">x!</button>
       </div>
     </div>
   </body>
